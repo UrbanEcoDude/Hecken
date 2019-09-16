@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.5.1/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.5.1/dist/leaflet.js"></script>
+	<style>
+		#map {position: absolute; top: 0; bottom: 0; left: 0; right: 0;}	
+	</style>
+
+
+</head>
+<body>
+
+
+	<div id = "map" style="width: 800px; height: 600px;"></div>
+	<script>
+
+		var map = L.map('map', {})
+		.setView([50.941, 6.9605], 13);
+
+		map.locate({setView: true, maxZoom: 16});
+
+
+
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 19,
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',})
+		.addTo(map);
+		
+		
+		var shapeStyle = {
+			color: 'green',
+			fillColor: '#000',
+			weight: 0.5,
+			fillOpacity: 0.1
+		};
+
+
+		var popup = L.popup();
+
+
+		function onMapClick(e) {
+			popup
+				.setLatLng(e.latlng)
+				.setContent("Die Koordinaten sind " + e.latlng.toString())
+				.openOn(map);
+		}
+		map.on('click', onMapClick);
+
+
+		function onLocationFound(e) {
+			var radius = e.accuracy;
+
+			L.marker(e.latlng).addTo(map)
+				.bindPopup("Sie befinden sich <b>hier</b>, <br> in einem Umkreis von rund <b>" + radius + " Metern</b>.<br> Bei mobilen Geräten ist die Ortung genauer.").openPopup();
+
+			L.circle(e.latlng, radius, shapeStyle).addTo(map);
+		}
+
+		
+		map.on('locationfound', onLocationFound);
+
+		function onLocationError(e) {
+			alert(e.message);
+		}
+		map.on('locationerror', onLocationError);
+
+
+	</script>
+</body>
+</html>
