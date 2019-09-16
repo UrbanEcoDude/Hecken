@@ -46,24 +46,6 @@
 		map.on('click', onMapClick);
 
 
-		function onLocationFound(e) {
-			var radius = e.accuracy;
-
-			L.marker(e.latlng).addTo(map)
-				.bindPopup("Sie befinden sich <b>hier</b>, <br> in einem Umkreis von rund <b>" + radius + " Metern</b>.<br> Bei mobilen Geräten ist die Ortung genauer.").openPopup();
-
-			L.circle(e.latlng, radius, shapeStyle).addTo(map);
-		}
-
-		
-		map.on('locationfound', onLocationFound);
-
-		function onLocationError(e) {
-			alert(e.message);
-		}
-		map.on('locationerror', onLocationError);
-
-
 	</script>
 </body>
 </html>
